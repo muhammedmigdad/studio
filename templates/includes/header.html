@@ -1,0 +1,71 @@
+{% load static %}
+
+<header class="z-50 md:fixed  w-full ">
+        <div class="flex bg-white bg-opacity-50 justify-between items-center pt-4 px-4 md:px-20">
+          <a href="{% url 'web:index' %}" class="animate__animated animate__rubberBand">
+            <img class="w-[200px]" src="{% static 'images/logo.png' %}" alt="logo">
+          </a>
+          <ul class="hidden md:flex space-x-6">
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:index' %}">HOME</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:about' %}">ABOUT</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:gellery' %}">GALLERY</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:filims' %}">FILIMS</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:portfolio' %}">PORTFOLIO</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:contact' %}">CONTACT</a></li>
+            <li class="animate__animated animate__swing"><a class="text-[20px] font-[500] text-[#363636] hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:enquiry' %}">ENQUIRY</a></li>
+          </ul>
+          <a href="{% url 'web:logout' %}">
+            <ul class="mr-20 hidden md:flex animate__animated animate__shakeX items-center border px-4 py-2 rounded-xl bg-[#7f7b7b] hover:bg-[#ed3737] mb-3">
+              <li class="text-[20px] font-medium  text-[#fff] mr-3">Logout</li>
+              <img class="w-[30px]" src="{% static 'images/logout.png' %}" alt="logout">
+            </ul>
+          </a>
+          <div class="md:hidden flex items-center" id="mobile-menu-button">
+            <i class='bx bx-menu' id="mobile-menu"></i>
+          </div>
+        </div>
+        <div class="md:hidden  border px-6 py-4 rounded-xl bg-black bg-opacity-80 max-w-xs mx-auto" id="mobile-drop">
+            <ul class="flex flex-col space-y-2 px-4">
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:index' %}">HOME</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:about' %}">ABOUT</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:gellery' %}">GALLERY</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:filims' %}">FILIMS</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:portfolio' %}">PORTFOLIO</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:contact' %}">CONTACT</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2" href="{% url 'web:enquiry' %}">ENQUIRY</a></li>
+            </ul>
+            <a class="block" href="{% url 'web:logout' %}">
+                <ul class="flex  items-center text-right px-4 mb-3">
+                    <li class="text-lg font-semibold text-[#ff1515] mr-3">Logout</li>
+                </ul>
+            </a>
+        </div>
+        
+
+</header>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dropdown functionality (similar to your existing code)
+        // ...
+    
+        // Menu icon functionality
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileDrop = document.getElementById('mobile-drop');
+        let isMenuOpen = false;
+    
+        mobileMenu.addEventListener('click', function () {
+        isMenuOpen = !isMenuOpen;
+    
+        if (isMenuOpen) {
+            mobileDrop.classList.remove('hidden');
+        } else {
+            console.log('Closing menu');
+            mobileDrop.classList.add('hidden');
+        }
+        });
+    
+
+    });
+</script>

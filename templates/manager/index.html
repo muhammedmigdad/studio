@@ -1,0 +1,193 @@
+{% extends 'base/web-base.html' %}
+
+{% load static %}
+
+{% block container %}
+
+<section class="bg-cover h-[600px] " style="background-image: url(/static/images/logo-bg.png);">
+    <div>
+        <div class="hidden md:flex space-x-6 bg-white justify-center items-center">
+            <ul class=" flex pb-5  pt-5">
+                <a href="{% url 'web:index' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4  ">HOME</li>
+                </a>
+                <a href="{% url 'web:about' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4 ">ABOUT</li>
+                </a>
+                <a href="{% url 'web:gellery' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4 ">GALLERY</li>
+                </a>
+                <a href="{% url 'web:filims' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4 ">FILIMS</li>
+                </a>
+                <a href="{% url 'web:portfolio' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4 ">PORTFOLIO</li>
+                </a>
+                <a href="{% url 'web:contact' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4 ">CONTACT</li>
+                </a>
+                <a href="{% url 'web:enquiry' %}">
+                    <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4  ">ENQUIRY</li>
+                </a>
+            </ul>
+            <div class="md:hidden flex items-center" id="mobile-menu-button">
+                <i class='bx bx-menu' id="mobile-menu"></i>
+              </div>
+         </div>
+         <div class="md:hidden  border px-6 py-4 rounded-xl bg-black bg-opacity-80 " id="mobile-drop">
+            <ul class="flex flex-col space-y-2 px-4">
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:index' %}">HOME</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:about' %}">ABOUT</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:gellery' %}">GALLERY</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:filims' %}">FILIMS</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:portfolio' %}">PORTFOLIO</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:contact' %}">CONTACT</a></li>
+                <li><a class="text-lg font-medium text-white hover:bg-[#BBA085] rounded-full py-2 px-4" href="{% url 'web:enquiry' %}">ENQUIRY</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl md:text-4xl font-semibold text-center text-gray-700 mb-8">Get in Touch</h1>
+        <form method="POST" class="space-y-8">
+            {% csrf_token %}
+            
+            <!-- Grid for full name, email, and contact number -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-lg text-gray-600 mb-2" for="name">Full Name</label>
+                    <input class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" type="text" name="full_name" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div>
+                    <label class="block text-lg text-gray-600 mb-2" for="email">Email Address</label>
+                    <input class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" type="email" name="email" id="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-lg text-gray-600 mb-2" for="enquiry_number">Contact No</label>
+                    <input class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" type="number" name="enquiry_number" id="enquiry_number" placeholder="Enter contact number">
+                </div>
+            </div>
+        
+            <!-- Location of shoot -->
+            <div>
+                <label class="block text-lg text-gray-600 mb-2" for="location">Location of Shoot</label>
+                <input class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" type="text" name="location_of_shoot" id="location_of_shoot" placeholder="Enter location" required>
+            </div>
+        
+            <!-- Event Type (Checkboxes) -->
+            <div>
+                <label class="block text-lg text-gray-600 mb-2">Event Type</label>
+                <div class="space-y-2">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Wedding" class="form-checkbox">
+                        <span class="ml-2">Wedding</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Baby Birthday" class="form-checkbox">
+                        <span class="ml-2">Baby Birthday</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Model Shoot" class="form-checkbox">
+                        <span class="ml-2">Model Shoot</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Nikah Photography" class="form-checkbox">
+                        <span class="ml-2">Nikah Photography</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Engagement" class="form-checkbox">
+                        <span class="ml-2">Engagement</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="EventType[]" value="Portrait" class="form-checkbox">
+                        <span class="ml-2">Portrait</span>
+                    </label>
+                </div>
+            </div>
+        
+            <!-- Event Date -->
+            <div>
+                <label class="block text-lg text-gray-600 mb-2">Event Date</label>
+                <input type="date" name="EventDate" class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" required>
+            </div>
+        
+            <!-- Event Address/Details -->
+            <div>
+                <label class="block text-lg text-gray-600 mb-2" for="message">Event Address/Details</label>
+                <textarea id="message" name="event_address_details" rows="5" class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring focus:border-blue-300" placeholder="Event Address/Details"></textarea>
+            </div>
+        
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="px-6 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition">Submit Enquiry</button>
+            </div>
+        </form>
+        
+    </div>
+</section>
+
+
+<footer class="mt-10 bg-[#070707]">
+    <div class="px-5 md:px-10">
+        <ul class="flex-wrap lg:flex  justify-between pt-10">
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:index' %}">HOME</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:about' %}">ABOUT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:gellery' %}">GALLERY</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:filims' %}">FILIMS</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:portfolio' %}">PORTFOLIO</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:contact' %}">CONTACT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:enquiry' %}">ENQUIRY</a>
+            </li>
+        </ul>
+        
+        <p class="text-[20px] mt-8 md:mt-28 w-full md:w-[50%] font-[500] mx-auto text-center">
+            Photography is the art of capturing moments, emotions, and stories through the lens of a camera. 
+            It allows us to freeze time, preserving memories in a way that words often can't. Whether it's a 
+            sweeping landscape, a candid portrait, or a fleeting moment, photography brings scenes to life, 
+            offering a visual narrative that speaks to the viewer's imagination and emotions.
+        </p>
+        
+        <ul class="flex justify-center mt-8">
+            <li class="mr-10">
+                <a href="https://www.facebook.com/">
+                    <img src="{% static 'images/vector.png' %}" alt="Facebook">
+                </a>
+            </li>
+            <li class="mr-10">
+                <a href="https://x.com/?lang=en">
+                    <img src="{% static 'images/vector (1).png' %}" alt="X (Twitter)">
+                </a>
+            </li>
+            <li class="mr-10">
+                <a href="https://www.youtube.com/">
+                    <img src="{% static 'images/vector (2).png' %}" alt="YouTube">
+                </a>
+            </li>
+            <li class="mr-10">
+                <a href="https://www.instagram.com/">
+                    <img src="{% static 'images/vector (3).png' %}" alt="Instagram">
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+
+{% endblock %}
+
+

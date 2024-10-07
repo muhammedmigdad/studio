@@ -1,0 +1,830 @@
+{% extends 'base/web-base.html' %}
+
+{% load static %}
+
+{% block container %}
+
+{% include 'includes/header.html' %}
+
+<style>
+
+    .banner {
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        overflow: hidden;
+    }
+    
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        z-index: 1;
+    }
+    
+    .slider {
+        position: absolute;
+        width: 200px;
+        height: 250px;
+        top: 10%;
+        left: calc(50% - 100px);
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+        animation: autoRun 20s linear infinite;
+        z-index: 2;
+    }
+    
+    @keyframes autoRun {
+        from {
+            transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
+        }
+        to {
+            transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
+        }
+    }
+    
+    .slider .item {
+        position: absolute;
+        inset: 0;
+        transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(550px);
+    }
+
+
+    
+    .slider .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    @media screen and (max-width: 1023px) {
+        .slider {
+            width: 160px;
+            height: 200px;
+            left: calc(50% - 80px);
+        }
+        .slider .item {
+            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px);
+        }
+    }
+    
+    @media screen and (max-width: 767px) {
+        .slider {
+            width: 100px;
+            height: 150px;
+            left: calc(50% - 50px);
+        }
+        .slider .item {
+            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(180px);
+        }
+    }
+    
+</style>
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
+  
+  .carousel {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+
+  }
+  
+  .carousel .list .item {
+    width: 180px;
+    height: 250px;
+    position: absolute;
+    top: 80%;
+    transform: translateY(-70%);
+    left: 70%;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    background-position: center;
+    background-size: cover;
+    z-index: 10;
+    transition: 1s;
+  }
+  
+  .carousel .list .item:nth-child(1),
+  .carousel .list .item:nth-child(2) {
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .carousel .list .item:nth-child(3) { left: 67%; }
+  .carousel .list .item:nth-child(4) { left: calc(67% + 200px); }
+  .carousel .list .item:nth-child(5) { left: calc(67% + 400px); }
+  .carousel .list .item:nth-child(6) { left: calc(67% + 600px); }
+  .carousel .list .item:nth-child(n+7) { left: calc(67% + 800px); opacity: 0; }
+  
+  .list .item .content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 400px;
+    text-align: left;
+    color: #fff;
+    display: none;
+  }
+  
+  .list .item:nth-child(2) .content {
+    display: block;
+  }
+  
+  .content .title {
+    font-size: 100px;
+    text-transform: uppercase;
+    color: #14ff72cb;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.3s forwards;
+  }
+  
+  .content .name {
+    font-size: 100px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 3px 4px 4px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.6s forwards;
+  }
+  
+  .content .des {
+    margin: 10px 0 20px 5px;
+    font-size: 18px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.9s forwards;
+  }
+  
+  .content .btn {
+    margin-left: 5px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 1.2s forwards;
+  }
+  
+  .content .btn button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border: 2px solid #fff;
+  }
+  
+  .content .btn button:nth-child(2) {
+    background: transparent;
+    color: #14ff72cb;
+    transition: 0.3s;
+  }
+  
+  .content .btn button:nth-child(2):hover {
+    background-color: #14ff72cb;
+    color: #fff;
+    border-color: #14ff72cb;
+  }
+  
+  @keyframes animate {
+    from {
+      opacity: 0;
+      transform: translate(0, 100px);
+      filter: blur(33px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0);
+      filter: blur(0);
+    }
+  }
+  
+  .arrows {
+    position: absolute;
+    top: 80%;
+    right: 52%;
+    z-index: 100;
+    width: 300px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .arrows button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #14ff72cb;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: monospace;
+    font-weight: bold;
+    transition: .5s;
+    cursor: pointer;
+  }
+  
+  .arrows button:hover {
+    background: #fff;
+    color: #000;
+  }
+  
+
+  
+  @keyframes runningTime {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 999px) {
+    .list .item .content { left: 50px; }
+    .content .title, .content .name { font-size: 70px; }
+    .content .des { font-size: 16px; }
+  }
+  
+  @media screen and (max-width: 690px) {
+    .list .item .content { top: 40%; }
+    .content .title, .content .name { font-size: 45px; }
+    .content .btn button { padding: 10px 15px; font-size: 14px; }
+  }
+  
+  
+  
+  
+  </style>
+  
+  
+        <div class="carousel py-96">
+  
+  
+          
+          <div class="list">
+  
+              <div class="item" style="background-image:  url(/static/images/images7.jpg);">
+                
+              </div>
+  
+  
+  
+              <div class="item" style="background-image: url(/static/images/bacgrounde2.jpg);">
+            
+  
+              </div>
+  
+              
+              <div class="item" style="background-image: url(/static/images/images16.jpg);">
+            
+  
+              </div>
+  
+                    
+              <div class="item" style="background-image: url(/static/images/images15.jpeg);">
+            
+  
+              </div>
+  
+  
+  
+              <div class="item" style="background-image: url(/static/images/Engagement.jpg);">
+            
+  
+              </div>
+  
+              <div class="item" style="background-image: url(/static/images/store5.png);">
+                  
+              
+  
+              </div>
+  
+              <div class="item" style="background-image: url(/static/images/nikah.jpg);">
+                  
+            
+  
+              </div>
+  
+              <div class="item" style="background-image: url(/static/images/store21.png);">
+                  
+              
+  
+              </div>
+  
+          </div>
+  
+          <!--next prev button-->
+          <div class="arrows">
+              <button class="prev"><</button>
+              <button class="next">></button>
+          </div>
+  
+  
+          <!-- time running -->
+          <div class="timeRunning"></div>
+  
+          
+  
+        </div>
+  
+        
+      
+
+    <section class=" bg-[#e3e0de]"> 
+        <div class="bg-cover ">
+
+        <div class="banner bg-cover bg-center  bg-fixed bg-no-repeat relative pt-10" >
+            
+            <div class="slider pt-20 border border-[#BBA085] bg-white bg-opacity-70 md:bg-opacity-50 lg:bg-opacity-80 px-5 md:px-7 py-12 md:py-20 rounded-lg shadow-lg w-[90%] md:w-[70%] lg:w-[50%] " style="--quantity: 10">
+                    <img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/login.jpg' %}" alt="image">
+                    <div class="item" style="--position: 1"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/story1.png' %}" alt="image"></div>
+                    <div class="item" style="--position: 2"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/images16.jpg' %}" alt="image"></div>
+                    <div class="item" style="--position: 3"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/story3.png' %}" alt="image"></div>
+                    <div class="item" style="--position: 4"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/story4.png' %}" alt="image"></div>
+                    <div class="item" style="--position: 5"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/model.jpg' %}" alt="image"></div>
+                    <div class="item" style="--position: 6"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/images14.jpg' %}" alt="image"></div>
+                    <div class="item" style="--position: 7"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/store7.png' %}" alt="image"></div>
+                    <div class="item" style="--position: 8"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/images9.jpg' %}" alt="image"></div>
+                    <div class="item" style="--position: 9"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/store9.png' %}" alt="image"></div>
+                    <div class="item" style="--position: 10"><img class="transition-transform duration-1000 hover:scale-125 hover:bg-[#e5d9cd] rounded-xl mt-7 font-[500] text-center mx-auto" src="{% static 'images/store10.png' %}" alt="image"></div>         
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="wrapper">
+    <section class="flex flex-col md:flex-row justify-between items-center">
+        <div class="w-full md:w-[40%] mt-6">
+            <img class="rounded-3xl w-full  " src="{% static 'images/photo-1.jpg' %}" alt="image">
+        </div>
+        <div class="w-full md:w-[55%]">
+            <h2 class="text-[20px] text-center font-[400] text-[#ebc6a1] mt-10">Hello, My Name is Tessa</h2>
+            <p class="text-[17px] w-[90%] md:w-[70%] text-[#2D2D2D] font-medium mx-auto text-center mt-8">
+                Lorem ipsum dolor sit amet consectetur. Dignissim consectetur tristique purus vehicula felis velit ac. Tempus velit morbi accumsan id sit interdum lacus turpis ac. Integer malesuada sagittis placerat eget.
+                Lorem ipsum dolor sit amet consectetur. Dignissim consectetur tristique purus vehicula felis velit ac. Tempus velit morbi accumsan id sit interdum lacus turpis ac. Integer malesuada sagittis placerat.
+            </p>
+            <ul class="flex justify-center mt-5">
+                <img class="w-[70px] mt-10" src="{% static 'images/logo.png' %}" alt="logo">
+            </ul>
+        </div>
+    </section>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap");
+    
+        .slider-container {
+          width: 100%;
+          height: 100vh;
+          background-image: url('Images/bg-img.png');
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .slider-images {
+          display: flex;
+          align-items: center;
+          gap: 21px;
+          overflow-x: auto; /* Allows horizontal scrolling on mobile */
+        }
+        
+        .slider-images img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 6px;
+        }
+        
+        .slider-img {
+          width: 110px;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          transition: 0.7s ease;
+        }
+        
+        .slider-images .slider-img:first-child, 
+        .slider-images .slider-img:last-child {
+          height: 480px;
+        }
+        
+        .slider-images .slider-img:nth-child(2), 
+        .slider-images .slider-img:nth-child(6) {
+          height: 560px;
+        }
+        
+        .slider-images .slider-img:nth-child(3), 
+        .slider-images .slider-img:nth-child(4), 
+        .slider-images .slider-img:nth-child(5) {
+          height: 665px;
+        }
+        
+        .details {
+          position: absolute;
+          bottom: 43px;
+          left: 43px;
+        }
+        
+        .details h2 {
+          font-family: "Jost", sans-serif;
+          font-size: 26px;
+          font-weight: 700;
+          text-align: left;
+          line-height: 44px;
+          color: #000000;
+          text-transform: uppercase;
+          transition: 0.7s ease;
+          display: none;
+        }
+        
+        .details p {
+          font-family: "Jost", sans-serif;
+          font-size: 20px;
+          font-weight: 700;
+          text-align: left;
+          line-height: 33px;
+          color: #000000;
+          text-transform: uppercase;
+          transition: 0.7s ease;
+          display: none;
+        }
+        
+        .slider-img.active {
+          width: 766px !important;
+          height: 750px !important;
+        }
+        
+        .slider-img.active h1 {
+          display: none;
+        }
+        
+        .slider-img.active .details p, 
+        .slider-img.active .details h2 {
+          display: block;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+          .slider-container {
+            height: auto;
+            padding: 20px 0;
+          }
+        
+          .slider-images {
+            gap: 10px; /* Reduce gap between images */
+            flex-wrap: nowrap;
+            justify-content: center; /* Center the single image on the screen */
+            overflow: hidden; /* Hide images that are not in the active view */
+          }
+        
+          .slider-img {
+            width: 100%; /* Full width for mobile */
+            height: auto;
+            display: none; /* Hide all images */
+          }
+        
+          .slider-img.active {
+            display: block; /* Show only the active image */
+            height: auto !important;
+          }
+        
+          .details h2 {
+            font-size: 18px;
+            line-height: 28px;
+          }
+        
+          .details p {
+            font-size: 16px;
+            line-height: 24px;
+          }
+        
+          .slider-img.active .details h2, 
+          .slider-img.active .details p {
+            display: block;
+            position: static;
+            text-align: center;
+            margin-top: 10px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .slider-images {
+            gap: 8px;
+          }
+       
+          .slider-img.active {
+            display: block; /* Show only the active image */
+            height: auto !important;
+          }
+        
+          .details h2 {
+            font-size: 16px;
+            line-height: 22px;
+          }
+        
+          .details p {
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+        
+    </style>
+    
+    <section>
+        <section class="slider-container">
+            <div class="slider-images">
+              <div class="slider-img">
+                <img src="{% static 'images/story1.png' %}" alt="1" />
+                <div class="details">
+                  <h2>Sarah & Luke</h2>
+                </div>
+              </div>
+              <div class="slider-img">
+                <img src="{% static 'images/story4.png' %}" alt="4" />
+                <div class="details">
+                  <h2>kaity  & hashi</h2>
+                </div>
+              </div>
+              <div class="slider-img">
+                <img src="{% static 'images/story3.png' %}" alt="3" />
+                <div class="details">
+                  <h2>Fiza</h2>
+                </div>
+              </div>
+              <div class="slider-img active">
+                <img src="{% static 'images/images16.jpg' %}" alt="2" />
+                <div class="details">
+                  <h2>samite</h2>
+                </div>
+              </div>
+              <div class="slider-img">
+                <img src="{% static 'images/images14.jpg' %}" alt="5" />
+                <div class="details">
+                    <h2>ryan</h2>
+                </div>
+              </div>
+              <div class="slider-img">
+                <img src="{% static 'images/store7.png' %}" alt="6" />
+                <div class="details">
+                  <h2>lauren & shan</h2>
+                </div>
+              </div>
+              <div class="slider-img">
+                <img src="{% static 'images/store10.png' %}" alt="7" />
+                <div class="details">
+                  <h2>dakes & shan</h2>
+                </div>
+              </div>
+            </div>
+          </section>
+         
+    </section>
+    
+    
+    
+
+    <!-- Photography Section -->
+    <section class="pt-20 bg-[#F4F4F4] mt-8">
+        <ul class="flex justify-center">
+            <img class="w-[100px]" src="{% static 'images/photo-2.WEBP' %}" alt="image">
+        </ul>
+        <h1 class="text-[20px] text-center font-[400] text-[#ebc6a1] mt-3">Wedding PHOTOGRAPHY</h1>
+        <p class="text-[17px] w-[90%] md:w-[60%] text-[#2D2D2D] font-medium mx-auto text-center pb-7 mt-8">
+            Wedding photography captures the most precious moments of a couple’s special day, preserving emotions, love, and joy through timeless images. From candid smiles to intimate glances, every shot tells a unique story. The photographer blends artistry and technical skill to create beautiful memories that the couple can cherish for a lifetime.
+        </p>
+    </section>
+
+    <section class="pt-10">
+        <h1 class="text-center text-[32px] font-[400]">What I Offer</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 pt-11">
+            
+            {% for service in services %}
+                <div class="border py-5 px-10 rounded-2xl bg-[#F4F4F4] text-center">
+                    <ul class="flex justify-center">
+                        <li>
+                            <img class="w-[400px] h-[250px] object-cover transition-transform duration-300 hover:scale-110 hover:shadow-lg rounded-3xl" 
+                                 src="{{ service.image.url }}" 
+                                 alt="service image">
+                        </li>
+                    </ul>
+                    
+                    <h1 class="text-[#ebc6a1] text-[24px] font-[500] italic mt-[30px]">{{ service.title }}</h1>
+                    <p class="text-[19px] font-[500] mt-[30px]">{{ service.description }}</p>
+                    <span class="text-[20px] font-[500] text-[#2D2D2D]">{{ service.price }}</span>
+                    <ul class="flex justify-center mt-3">
+                        <a href="{% url 'web:about' %}" class="">
+                            <button class="bg-[#d5c3b0] text-white text-center font-medium py-3 px-10 mb-3 rounded-2xl hover:bg-[#d3a674] hover:scale-110 transition-transform duration-300">
+                                View About
+                            </button> 
+                        </a>
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        
+    <div class="bg-cover w-full h-[600px] mt-9 md:h-[600px] lg:h-[700px]" style="background-image: url(/static/images/store5.png);">
+        <div class="flex justify-center py-16 md:py-24 lg:py-36">
+            <ul class="border border-[#BBA085] bg-white bg-opacity-70 md:bg-opacity-50 lg:bg-opacity-30 px-5 md:px-7 py-12 md:py-20 rounded-lg shadow-lg">
+                <h1 class="text-[28px] md:text-[30px] font-bold text-[#BBA085] text-center">My Promise</h1>
+                <p class="text-[18px] md:text-[20px] font-medium text-[#000000] text-center mx-auto mt-4 w-[80%] md:w-[70%]">I guarantee breathtaking wedding photos that perfectly capture the magic of your special day, or your money back.</p>
+            </ul>
+        </div>
+        <a href="{% url 'web:portfolio' %}" class="flex justify-center">
+            <button class="bg-[#d89450] text-white text-center font-medium py-3 px-10 mb-3 rounded-full hover:bg-[#A99074] hover:scale-110 transition-transform duration-300">
+                View Portfolio
+            </button> 
+        </a>
+    </div>
+
+    <h1 class="text-[25px] font-semibold text-center text-[#A99074] mt-11">Enquire Now!</h1>
+    <p class="text-[#3a3939] mx-auto text-[20px] md:text-[25px] lg:text-[30px] text-center font-[400] w-[80%] md:w-[50%] lg:w-[26%] mt-5">“YOU WILL NEVER KNOW THE VALUE OF A MOMENT UNTIL IT BECOMES A MEMORY.”</p>
+    
+    <div class="bg-cover w-full h-[500px] md:h-[600px] lg:h-[700px] flex justify-center mt-6" style="background-image: url(/static/images/bg.png);">
+        <div class="border border-[#BBA085] bg-white bg-opacity-70 md:bg-opacity-50 lg:bg-opacity-80 px-5 md:px-7 py-12 md:py-20 rounded-lg shadow-lg w-[90%] md:w-[70%] lg:w-[50%]">
+            <ul class="flex flex-col md:flex-row items-center justify-center mb-4 transition-transform duration-300 hover:scale-110 hover:shadow-lg rounded-3xl">
+                <li class="flex items-center">
+                    <img src="{% static 'images/email.png' %}" alt="email icon" class="w-6 h-6 md:w-auto md:h-auto">
+                    <h1 class="text-[20px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-4">EMAIL:</h1>
+                    <p class="text-[18px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-2">contact@Tessa.xyz</p>
+                </li>
+            </ul>            
+            <ul class="flex flex-col md:flex-row items-center justify-center mb-4 transition-transform duration-300 hover:scale-110 hover:shadow-lg rounded-3xl">
+                <li class="flex items-center">
+                    <img src="{% static 'images/location.png' %}" alt="location icon" class="w-6 h-6 md:w-auto md:h-auto">
+                    <h1 class="text-[20px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-4">ADDRESS:</h1>
+                    <p class="text-[18px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-2">Fresno, CA 93722</p>
+                </li>
+            </ul>            
+            <ul class="flex flex-col md:flex-row items-center justify-center mb-4 transition-transform duration-300 hover:scale-110 hover:shadow-lg rounded-3xl">
+                <li class="flex items-center">
+                    <img src="{% static 'images/phone.png' %}" alt="phone icon" class="w-6 h-6 md:w-auto md:h-auto">
+                    <h1 class="text-[20px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-4">CONTACT:</h1>
+                    <p class="text-[18px] text-[#2D2D2D] font-medium mt-3 md:mt-0 ml-2">+1 901 247 5467</p>
+                </li>
+            </ul>            
+            <ul class="flex justify-center">
+                <a href="{% url 'web:contact' %}">
+                    <button class="bg-[#d89450] text-white text-center font-medium py-3 px-10 mb-3 rounded-full hover:bg-[#A99074] hover:scale-110 transition-transform duration-300">
+                        View Contact
+                    </button>                    
+                </a>
+            </ul>
+        </div>
+    </div>
+    </section>
+<footer class="mt-10 bg-[#070707]">
+    <div class="px-5 md:px-10">
+        <ul class="flex-wrap lg:flex  justify-between pt-10">
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:index' %}">HOME</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:about' %}">ABOUT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:gellery' %}">GALLERY</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:filims' %}">FILIMS</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:portfolio' %}">PORTFOLIO</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:contact' %}">CONTACT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:enquiry' %}">ENQUIRY</a>
+            </li>
+        </ul>
+        
+        <p class="text-[20px] mt-8 md:mt-28 w-full md:w-[50%] font-[500] mx-auto text-center">
+            Photography is the art of capturing moments, emotions, and stories through the lens of a camera. 
+            It allows us to freeze time, preserving memories in a way that words often can't. Whether it's a 
+            sweeping landscape, a candid portrait, or a fleeting moment, photography brings scenes to life, 
+            offering a visual narrative that speaks to the viewer's imagination and emotions.
+        </p>
+        
+        <ul class="flex justify-center mt-8">
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.facebook.com/">
+                    <img src="{% static 'images/vector.png' %}" alt="Facebook">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://x.com/?lang=en">
+                    <img src="{% static 'images/vector (1).png' %}" alt="X (Twitter)">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.youtube.com/">
+                    <img src="{% static 'images/vector (2).png' %}" alt="YouTube">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.instagram.com/">
+                    <img src="{% static 'images/vector (3).png' %}" alt="Instagram">
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sliderImages = document.querySelectorAll(".slider-img");
+      
+        sliderImages.forEach(image => {
+          image.addEventListener("click", function () {
+            sliderImages.forEach(img => img.classList.remove("active"));
+            this.classList.add("active");
+          });
+        });
+      });
+  </script>
+
+
+
+<script>
+    var nextBtn = document.querySelector('.next'),
+    prevBtn = document.querySelector('.prev'),
+    carousel = document.querySelector('.carousel'),
+    list = document.querySelector('.list'), 
+    item = document.querySelectorAll('.item'),
+    runningTime = document.querySelector('.carousel .timeRunning') 
+  
+  let timeRunning = 1000 
+  let timeAutoNext = 3000
+  
+  nextBtn.onclick = function(){
+    showSlider('next')
+  }
+  
+  prevBtn.onclick = function(){
+    showSlider('prev')
+  }
+  
+  let runTimeOut 
+  
+  let runNextAuto = setTimeout(() => {
+    nextBtn.click()
+  }, timeAutoNext)
+  
+  
+  function resetTimeAnimation() {
+    runningTime.style.animation = 'none'
+    runningTime.offsetHeight /* trigger reflow */
+    runningTime.style.animation = null 
+    runningTime.style.animation = 'runningTime 2s linear 1 forwards'
+  }
+  
+  
+  function showSlider(type) {
+    let sliderItemsDom = list.querySelectorAll('.carousel .list .item')
+    if(type === 'next'){
+        list.appendChild(sliderItemsDom[0])
+        carousel.classList.add('next')
+    } else{
+        list.prepend(sliderItemsDom[sliderItemsDom.length - 1])
+        carousel.classList.add('prev')
+    }
+  
+    clearTimeout(runTimeOut)
+  
+    runTimeOut = setTimeout( () => {
+        carousel.classList.remove('next')
+        carousel.classList.remove('prev')
+    }, timeRunning)
+  
+  
+    clearTimeout(runNextAuto)
+    runNextAuto = setTimeout(() => {
+        nextBtn.click()
+    }, timeAutoNext)
+  
+    resetTimeAnimation() // Reset the running time animation
+  }
+  
+  // Start the initial animation 
+  resetTimeAnimation()
+  </script>
+  
+
+{% endblock %}

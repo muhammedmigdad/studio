@@ -1,0 +1,326 @@
+{% extends 'base/web-base.html' %}
+
+{% load static %}
+
+{% block container %}
+
+{% include 'includes/header.html' %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap');
+  
+  .carousel {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+
+  }
+  
+  .carousel .list .item {
+    width: 180px;
+    height: 250px;
+    position: absolute;
+    top: 80%;
+    transform: translateY(-70%);
+    left: 70%;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    background-position: center;
+    background-size: cover;
+    z-index: 10;
+    transition: 1s;
+  }
+  
+  .carousel .list .item:nth-child(1),
+  .carousel .list .item:nth-child(2) {
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .carousel .list .item:nth-child(3) { left: 67%; }
+  .carousel .list .item:nth-child(4) { left: calc(67% + 200px); }
+  .carousel .list .item:nth-child(5) { left: calc(67% + 400px); }
+  .carousel .list .item:nth-child(6) { left: calc(67% + 600px); }
+  .carousel .list .item:nth-child(n+7) { left: calc(67% + 800px); opacity: 0; }
+  
+  .list .item .content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 400px;
+    text-align: left;
+    color: #fff;
+    display: none;
+  }
+  
+  .list .item:nth-child(2) .content {
+    display: block;
+  }
+  
+  .content .title {
+    font-size: 100px;
+    text-transform: uppercase;
+    color: #14ff72cb;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.3s forwards;
+  }
+  
+  .content .name {
+    font-size: 100px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 3px 4px 4px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.6s forwards;
+  }
+  
+  .content .des {
+    margin: 10px 0 20px 5px;
+    font-size: 18px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.9s forwards;
+  }
+  
+  .content .btn {
+    margin-left: 5px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 1.2s forwards;
+  }
+  
+  .content .btn button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border: 2px solid #fff;
+  }
+  
+  .content .btn button:nth-child(2) {
+    background: transparent;
+    color: #14ff72cb;
+    transition: 0.3s;
+  }
+  
+  .content .btn button:nth-child(2):hover {
+    background-color: #14ff72cb;
+    color: #fff;
+    border-color: #14ff72cb;
+  }
+  
+  @keyframes animate {
+    from {
+      opacity: 0;
+      transform: translate(0, 100px);
+      filter: blur(33px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0);
+      filter: blur(0);
+    }
+  }
+  
+  .arrows {
+    position: absolute;
+    top: 80%;
+    right: 52%;
+    z-index: 100;
+    width: 300px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .arrows button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #14ff72cb;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: monospace;
+    font-weight: bold;
+    transition: .5s;
+    cursor: pointer;
+  }
+  
+  .arrows button:hover {
+    background: #fff;
+    color: #000;
+  }
+  
+
+  @keyframes runningTime {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 999px) {
+    .list .item .content { left: 50px; }
+    .content .title, .content .name { font-size: 70px; }
+    .content .des { font-size: 16px; }
+  }
+  
+  @media screen and (max-width: 690px) {
+    .list .item .content { top: 40%; }
+    .content .title, .content .name { font-size: 45px; }
+    .content .btn button { padding: 10px 15px; font-size: 14px; }
+  }
+  
+  
+  
+  
+  </style>
+  
+  
+        <div class="carousel py-96">
+          <div class="list">
+              <div class="item" style="background-image: url(/static/images/store21.png);"></div>
+          </div>
+          <!-- time running -->
+          <div class="timeRunning"></div>
+        </div>
+  
+
+
+<section class="wrapper">
+    <div class="py-10">
+        <!-- About Section -->
+        <h1 class="text-center text-[30px] font-semibold text-[#ebc6a1]">About</h1>
+
+        <ul class="flex flex-wrap justify-center mt-10 space-x-6 lg:space-x-10">
+            <li><img class="w-[150px] lg:w-[200px] " src="{% static 'images/story1.png' %}" alt=""></li>
+            <li><img class="w-[150px] lg:w-[200px] " src="{% static 'images/story2.png' %}" alt=""></li>
+            <li><img class="w-[150px] lg:w-[200px] " src="{% static 'images/story3.png' %}" alt=""></li>
+            <li><img class="w-[150px] lg:w-[200px] " src="{% static 'images/story4.png' %}" alt="image"></li>
+        </ul>
+
+        <!-- My Story Section -->
+        <h2 class="text-center mt-5 text-[20px] font-semibold text-[#2D2D2D]">MY STORY</h2>
+        <div class="flex flex-col lg:flex-row justify-between items-center mt-10">
+            <img class="rounded-2xl w-full lg:w-[35%] mb-8 lg:mb-0" src="{% static 'images/photo-1.jpg' %}" alt="image">
+            <div class="lg:w-[58%]">
+                <p class="text-[16px] lg:text-[20px] font-medium w-full lg:w-[80%]">
+                    Photography is the art of capturing moments that tell a story without words. It freezes time, preserving the emotions, details, and essence of life in a single frame. Whether it’s a fleeting glance, a vibrant landscape, or the soft glow of sunset, each photograph holds a unique narrative. Through the lens, photographers can turn ordinary scenes into extraordinary tales, inviting viewers to experience the world from new perspectives, relive memories, and feel connected to distant places and moments. Photography is not just about what you see—it's about what you feel.
+                </p>
+                <ul class="mt-8">
+                    <a href="{% url 'web:portfolio' %}" class="text-[16px] lg:text-[20px] font-medium bg-[#E9E1D9] border px-4 py-2 hover:bg-[#A99074] hover:scale-110 transition-transform duration-300 rounded-xl inline-block">View Portfolio</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image with Quote Section -->
+    <div class="bg-[#deebed] px-4 py-8 lg:px-10">
+        <div class="flex justify-center pt-5">
+            <img class="w-[80px] lg:w-[100px]" src="{% static 'images/photo-2.WEBP' %}" alt="image">
+        </div>
+        <h3 class="text-[18px] lg:text-[22px] font-semibold text-center mt-4">Celebrate your love with stunning images that <br> will be cherished for a lifetime</h3>
+    </div>
+
+    <!-- Get to Know Me Section -->
+    <h2 class="text-center text-[30px] font-semibold text-[#ebc6a1] mt-10">GET TO KNOW ME</h2>
+    <h2 class="text-center mt-5 text-[18px] lg:text-[20px] font-semibold text-[#5B5B5B]">A Few Facts About Myself</h2>
+
+    <!-- Facts Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 lg:mt-20">
+        <!-- Fact 1 -->
+        <div class="text-center">
+            <img class="w-[150px] lg:w-[200px] mx-auto" src="{% static 'images/story3.png' %}" alt="">
+            <span class="block text-[32px] lg:text-[42px] font-semibold text-[#B58B61] mt-4">1</span>
+            <div class="border-t w-[150px] lg:w-[200px] bg-[#B58B61] mx-auto mt-4"></div>
+            <p class="text-center mt-5 text-[14px] lg:text-[16px] font-medium w-full lg:w-[80%] mx-auto text-[#5B5B5B]">Lorem ipsum dolor sit amet as a consectetur. Rutrum ins tincidunt consequat nec potenti. Justo molestie amet vulputate aliquam viverra ut viverra lorem. Velit tellus vitae massa sed egestas ornare pretium.</p>
+        </div>
+
+        <!-- Fact 2 -->
+        <div class="text-center">
+            <img class="w-[150px] lg:w-[200px] mx-auto" src="{% static 'images/story1.png' %}" alt="">
+            <span class="block text-[32px] lg:text-[42px] font-semibold text-[#B58B61] mt-4">2</span>
+            <div class="border-t w-[150px] lg:w-[200px] bg-[#B58B61] mx-auto mt-4"></div>
+            <p class="text-center mt-5 text-[14px] lg:text-[16px] font-medium w-full lg:w-[80%] mx-auto text-[#5B5B5B]">Lorem ipsum dolor sit amet as a consectetur. Rutrum ins tincidunt consequat nec potenti. Justo molestie amet vulputate aliquam viverra ut viverra lorem. Velit tellus vitae massa sed egestas ornare pretium.</p>
+        </div>
+
+        <!-- Fact 3 -->
+        <div class="text-center">
+            <img class="w-[150px] lg:w-[200px] mx-auto" src="{% static 'images/story2.png' %}" alt="">
+            <span class="block text-[32px] lg:text-[42px] font-semibold text-[#B58B61] mt-4">3</span>
+            <div class="border-t w-[150px] lg:w-[200px] bg-[#B58B61] mx-auto mt-4"></div>
+            <p class="text-center mt-5 text-[14px] lg:text-[16px] font-medium w-full lg:w-[80%] mx-auto text-[#5B5B5B]">Lorem ipsum dolor sit amet as a consectetur. Rutrum ins tincidunt consequat nec potenti. Justo molestie amet vulputate aliquam viverra ut viverra lorem. Velit tellus vitae massa sed egestas ornare pretium.</p>
+        </div>
+    </div>
+</section>
+
+
+
+<footer class="mt-10 bg-[#070707]">
+    <div class="px-5 md:px-10">
+        <ul class="flex-wrap lg:flex  justify-between pt-10">
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:index' %}">HOME</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:about' %}">ABOUT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:gellery' %}">GALLERY</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:filims' %}">FILIMS</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:portfolio' %}">PORTFOLIO</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:contact' %}">CONTACT</a>
+            </li>
+            <li class="text-[20px] font-[500] text-[#363636] mr-[44px] hover:bg-[#BBA085] rounded-full py-2 px-4">
+                <a href="{% url 'web:enquiry' %}">ENQUIRY</a>
+            </li>
+        </ul>
+        
+        <p class="text-[20px] mt-8 md:mt-28 w-full md:w-[50%] font-[500] mx-auto text-center">
+            Photography is the art of capturing moments, emotions, and stories through the lens of a camera. 
+            It allows us to freeze time, preserving memories in a way that words often can't. Whether it's a 
+            sweeping landscape, a candid portrait, or a fleeting moment, photography brings scenes to life, 
+            offering a visual narrative that speaks to the viewer's imagination and emotions.
+        </p>
+       
+        <ul class="flex justify-center mt-8">
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.facebook.com/">
+                    <img src="{% static 'images/vector.png' %}" alt="Facebook">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://x.com/?lang=en">
+                    <img src="{% static 'images/vector (1).png' %}" alt="X (Twitter)">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.youtube.com/">
+                    <img src="{% static 'images/vector (2).png' %}" alt="YouTube">
+                </a>
+            </li>
+            <li class="mr-10 transition-transform duration-300 hover:scale-125 hover:shadow-lg ">
+                <a href="https://www.instagram.com/">
+                    <img src="{% static 'images/vector (3).png' %}" alt="Instagram">
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+
+{% endblock %}
